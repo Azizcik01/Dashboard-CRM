@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block title %}
+<title>Ishchi | List</title>
+{% endblock title %}
+
+
+{% block content %}
+
+       <div class="col-sm-12">
+          <div class="card">
+             <div class="card-header d-flex justify-content-between">
+                <div class="header-title">
+                   <h4 class="card-title">Ishchilar ro'yhati</h4>
+                </div>
+       
+             </div>
+             <div class="card-body">
+                <div id="table">
+                   <span class="float-right mb-3 mr-2">
+                    <a class="btn btn-sm bg-primary" href='create'>Add New</a>
+                   </span>
+                   <table class="table table-bordered table-responsive-md table-striped text-center">
+                      <thead>
+                         <tr>
+                            <th>Nº</th>
+                            <th>FIO</th>
+                            <th>Yosh</th>
+                            <th>Lavozim</th>
+                            <th>Maosh</th>
+                            <th>Holat</th>
+                            <th>Info</th>
+                            <th>Tahrirlash</th>
+                            <th>Delete</th>
+                            
+                         </tr>
+                      </thead>
+                      <tbody>
+
+                        {% for i in roots %}
+                         <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ i.ism }}</td>
+                            <td>{{ i.yosh }}</td>
+                            <td>{{ i.lavozim }}</td>
+                            <td>{{ i.maosh }} {{i.maosh_type}}</td>
+                            <td>
+                              <div class="custom-control custom-switch custom-switch-text custom-switch-color custom-control-inline">
+                                 <div class="custom-switch-inner">
+                                    <p class="mb-0">Aktiv</p>
+                                    <input type="checkbox" class="custom-control-input bg-success" id="customSwitch-{{ forloop.counter }}" checked="">
+                                    <label class="custom-control-label" for="customSwitch-{{ forloop.counter }}" data-on-label="on" data-off-label="off">
+                                    </label>
+                                 </div>
+                              </div>
+                            </td>
+                            <td><a class="btn btn-sm bg-primary" href='{% url "about" pk=i.id %}'>Info</a></td>
+                            <td><a class="btn btn-sm bg-success" href='{% url "edit" pk=i.id %}'>✒️</a></td>
+                            <td><a type='button' class='btn btn-sm bg-danger' data-toggle="modal" data-target=".bd-example-modal-sm-{{ forloop.counter }}">Del</a></td>
+                         </tr> 
+                         {% endfor %}
+                      </tbody>
+                   </table>
+                </div>
+
+
+{% for i in roots %}
+{% comment %} delete modal{% endcomment %}
+                <div class="modal fade bd-example-modal-sm-{{ forloop.counter }}" tabindex="-1" role="dialog"  aria-hidden="true">
+                  <div class="modal-dialog modal-sm">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <h5 class="modal-title">Delete</h5>
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                           <span aria-hidden="true">&times;</span>
+                           </button>
+                        </div>
+                        <div class="modal-body">
+                           <p>Rostdan ham {{ i.ism }} ni o'chirmoqchimisiz?</p>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Yo'q</button>
+                           <a href="{% url "delete" pk=i.id conf=1 %}" type="button" class="btn btn-primary">Ha</a>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+               {% endfor %}         
+          
+
+
+
+{% endblock content %}
